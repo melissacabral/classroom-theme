@@ -33,232 +33,19 @@ Tags:
 12.0 Media
 	12.1 Captions
 	12.2 Galleries
---------------------------------------------------------------*/
+	--------------------------------------------------------------*/
 
 /*--------------------------------------------------------------
-1.0 Normalize
+== Normalize
 --------------------------------------------------------------*/
-html {
-	font-family: sans-serif;
-	-webkit-text-size-adjust: 100%;
-	-ms-text-size-adjust:     100%;
-}
-
-body {
-	margin: 0;
-}
-
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-main,
-menu,
-nav,
-section,
-summary {
-	display: block;
-}
-
-audio,
-canvas,
-progress,
-video {
-	display: inline-block;
-	vertical-align: baseline;
-}
-
-audio:not([controls]) {
-	display: none;
-	height: 0;
-}
-
-[hidden],
-template {
-	display: none;
-}
-
-a {
-	background-color: transparent;
-}
-
-a:active,
-a:hover {
-	outline: 0;
-}
-
-abbr[title] {
-	border-bottom: 1px dotted;
-}
-
-b,
-strong {
-	font-weight: bold;
-}
-
-dfn {
-	font-style: italic;
-}
-
-h1 {
-	font-size: 2em;
-	margin: 0.67em 0;
-}
-
-mark {
-	background: #ff0;
-	color: #000;
-}
-
-small {
-	font-size: 80%;
-}
-
-sub,
-sup {
-	font-size: 75%;
-	line-height: 0;
-	position: relative;
-	vertical-align: baseline;
-}
-
-sup {
-	top: -0.5em;
-}
-
-sub {
-	bottom: -0.25em;
-}
-
-img {
-	border: 0;
-}
-
-svg:not(:root) {
-	overflow: hidden;
-}
-
-figure {
-	margin: 1em 40px;
-}
-
-hr {
-	box-sizing: content-box;
-	height: 0;
-}
-
-pre {
-	overflow: auto;
-}
-
-code,
-kbd,
-pre,
-samp {
-	font-family: monospace, monospace;
-	font-size: 1em;
-}
-
-button,
-input,
-optgroup,
-select,
-textarea {
-	color: inherit;
-	font: inherit;
-	margin: 0;
-}
-
-button {
-	overflow: visible;
-}
-
-button,
-select {
-	text-transform: none;
-}
-
-button,
-html input[type="button"],
-input[type="reset"],
-input[type="submit"] {
-	-webkit-appearance: button;
-	cursor: pointer;
-}
-
-button[disabled],
-html input[disabled] {
-	cursor: default;
-}
-
-button::-moz-focus-inner,
-input::-moz-focus-inner {
-	border: 0;
-	padding: 0;
-}
-
-input {
-	line-height: normal;
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-	box-sizing: border-box;
-	padding: 0;
-}
-
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-	height: auto;
-}
-
-input[type="search"] {
-	-webkit-appearance: textfield;
-	box-sizing: content-box;
-}
-
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-decoration {
-	-webkit-appearance: none;
-}
-
-fieldset {
-	border: 1px solid #c0c0c0;
-	margin: 0 2px;
-	padding: 0.35em 0.625em 0.75em;
-}
-
-legend {
-	border: 0;
-	padding: 0;
-}
-
-textarea {
-	overflow: auto;
-}
-
-optgroup {
-	font-weight: bold;
-}
-
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-td,
-th {
-	padding: 0;
-}
+html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block;vertical-align:baseline}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background-color:transparent}a:active,a:hover{outline:0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:700}dfn{font-style:italic}h1{font-size:2em;margin:.67em 0}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-.5em}sub{bottom:-.25em}img{border:0}svg:not(:root){overflow:hidden}figure{margin:1em 40px}hr{box-sizing:content-box;height:0}pre{overflow:auto}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}button,input,optgroup,select,textarea{color:inherit;font:inherit;margin:0}button{overflow:visible}button,select{text-transform:none}button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}input{line-height:normal}input[type=checkbox],input[type=radio]{box-sizing:border-box;padding:0}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{height:auto}input[type=search]{-webkit-appearance:textfield;box-sizing:content-box}input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration{-webkit-appearance:none}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{border:0;padding:0}textarea{overflow:auto}optgroup{font-weight:700}table{border-collapse:collapse;border-spacing:0}td,th{padding:0}
 
 /*
 == Colors - todo: change when customization happens
- */
-#page,
-header[role=banner],
+*/
+#page{
+	background-color: white;
+}
 aside[role=complementary],
 footer[role=contentinfo]
 {
@@ -267,21 +54,50 @@ footer[role=contentinfo]
 /*
 ==Layout
 */
+html {
+	box-sizing: border-box;
+}
+*, *:before, *:after {
+	box-sizing: inherit;
+}
 #page{
-	max-width: 60em;
+	max-width: 62.5em;
 	margin: 0 auto;
 }
-header[role=banner],
+header[role="banner"] .site-title,
 aside[role=complementary],
 footer[role=contentinfo],
 main{
 	padding:2%;
 }
+header[role="banner"]{
+	text-align: center;
+}
+header[role="banner"] .site-title{
+	background-color: rgba(255,255,255,.7);
+	color:black;
+	font-size: 1.4em;
+}
+header[role="banner"] .site-title a{
+	color:black;
+}
+.site-branding{
+	background-position: center center;
+}
+.site-branding .site-description{
+	display: none;
+}
 
+.hentry{
+	position: relative;
+}
 
 /*--------------------------------------------------------------
-2.0 Typography
+== Typography
 --------------------------------------------------------------*/
+html{
+	font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;
+}
 body,
 button,
 input,
@@ -300,6 +116,8 @@ h4,
 h5,
 h6 {
 	clear: both;
+	margin: 0;
+	padding: .25em 0
 }
 
 p {
@@ -368,14 +186,8 @@ big {
 }
 
 /*--------------------------------------------------------------
-3.0 Elements
+== Elements
 --------------------------------------------------------------*/
-html {
-  box-sizing: border-box;
-}
-*, *:before, *:after {
-  box-sizing: inherit;
-}
 
 
 body {
@@ -401,18 +213,6 @@ hr {
 	margin-bottom: 1.5em;
 }
 
-ul,
-ol {
-	margin: 0 0 1.5em 3em;
-}
-
-ul {
-	list-style: disc;
-}
-
-ol {
-	list-style: decimal;
-}
 
 li > ul,
 li > ol {
@@ -441,31 +241,22 @@ table {
 /*--------------------------------------------------------------
 4.0 Forms
 --------------------------------------------------------------*/
+.button,
 button,
 input[type="button"],
 input[type="reset"],
 input[type="submit"] {
-	border: 1px solid;
-	border-color: #ccc #ccc #bbb;
-	border-radius: 3px;
-	background: #e6e6e6;
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 15px 17px rgba(255, 255, 255, 0.5), inset 0 -5px 12px rgba(0, 0, 0, 0.05);
-	color: rgba(0, 0, 0, .8);
-	font-size: 12px;
-	font-size: 0.75rem;
+	border: none;
+	font-size: 1.1em;
+	background-color: #229ABD;
+	color: white;
+	box-shadow: 
+	inset 0 15px 17px rgba(255, 255, 255, 0.2);
 	line-height: 1;
-	padding: .6em 1em .4em;
-	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+	padding: .6em 1em ;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.6);
 }
-
-button:hover,
-input[type="button"]:hover,
-input[type="reset"]:hover,
-input[type="submit"]:hover {
-	border-color: #ccc #bbb #aaa;
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 15px 17px rgba(255, 255, 255, 0.8), inset 0 -5px 12px rgba(0, 0, 0, 0.02);
-}
-
+.button,
 button:focus,
 input[type="button"]:focus,
 input[type="reset"]:focus,
@@ -473,9 +264,13 @@ input[type="submit"]:focus,
 button:active,
 input[type="button"]:active,
 input[type="reset"]:active,
-input[type="submit"]:active {
-	border-color: #aaa #bbb #bbb;
-	box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.5), inset 0 2px 5px rgba(0, 0, 0, 0.15);
+input[type="submit"]:active,
+button:hover,
+input[type="button"]:hover,
+input[type="reset"]:hover,
+input[type="submit"]:hover {
+	outline: none;
+	background-color: #42CDDD;
 }
 
 input[type="text"],
@@ -518,26 +313,42 @@ textarea {
 5.1 Links
 --------------------------------------------------------------*/
 a {
-	color: royalblue;
+	color: #1D85A3;
+	text-decoration: none;
 }
 
-a:visited {
-	color: purple;
-}
+
 
 a:hover,
 a:focus,
 a:active {
-	color: midnightblue;
+	color: #E69C15;
 }
 
 a:focus {
-	outline: thin dotted;
+	outline: none;
+	background-color: #229ABD;
+	color: white;
 }
 
 a:hover,
 a:active {
 	outline: 0;
+}
+
+.edit-link a{
+	display: inline-block;
+	background-color: #909090;
+	color: white;
+	padding: .1em .2em;
+	margin:0 .1em ;
+	position: absolute;
+	top:0;
+	right:0;
+	opacity: .4;
+}
+.edit-link a:hover{
+	opacity: 1;
 }
 
 /*--------------------------------------------------------------
@@ -616,6 +427,11 @@ a:active {
 }
 
 @media screen and (max-width: 600px) {
+	.menu-toggle{
+		width:100%;
+		
+		border-radius: 0;
+	}
 	.menu-toggle,
 	.main-navigation.toggled .nav-menu {
 		display: block;
@@ -623,6 +439,13 @@ a:active {
 
 	.main-navigation ul {
 		display: none;
+	}
+	.main-navigation li{
+		display: block;
+		float:none;
+		text-align: center;
+		padding: .25em;
+		border-top: 1px solid rgba(0,0,0,.2)
 	}
 }
 
@@ -750,13 +573,16 @@ a:active {
 }
 
 /*--------------------------------------------------------------
-10.0 Content
+== Content
 --------------------------------------------------------------*/
 /*--------------------------------------------------------------
-10.1 Posts and pages
+== Posts and pages
 --------------------------------------------------------------*/
 .sticky {
 	display: block;
+	padding: 1em;
+	background-color: rgba(0,0,0,.1);
+	border:solid 1px rgba(0,0,0,.2);
 }
 
 .hentry {
@@ -773,11 +599,7 @@ a:active {
 	display: inline;
 }
 
-.page-content,
-.entry-content,
-.entry-summary {
-	margin: 1.5em 0 0;
-}
+
 
 .page-links {
 	clear: both;
@@ -785,7 +607,7 @@ a:active {
 }
 
 /*--------------------------------------------------------------
-10.2 Asides
+== Asides
 --------------------------------------------------------------*/
 .blog .format-aside .entry-title,
 .archive .format-aside .entry-title {
@@ -793,7 +615,7 @@ a:active {
 }
 
 /*--------------------------------------------------------------
-10.3 Comments
+== Comments
 --------------------------------------------------------------*/
 .comment-content a {
 	word-wrap: break-word;
@@ -804,7 +626,8 @@ a:active {
 }
 
 /*--------------------------------------------------------------
-11.0 Infinite scroll
+==  Infinite scroll
+TODO: figure out what this is
 --------------------------------------------------------------*/
 /* Globally hidden elements when Infinite Scroll is supported and in use. */
 .infinite-scroll .posts-navigation, /* Older / Newer Posts Navigation (always hidden) */
@@ -818,7 +641,7 @@ a:active {
 }
 
 /*--------------------------------------------------------------
-12.0 Media
+== Media
 --------------------------------------------------------------*/
 .page-content .wp-smiley,
 .entry-content .wp-smiley,
@@ -837,7 +660,7 @@ object {
 }
 
 /*--------------------------------------------------------------
-12.1 Captions
+== Captions
 --------------------------------------------------------------*/
 .wp-caption {
 	margin-bottom: 1.5em;
@@ -858,7 +681,7 @@ object {
 }
 
 /*--------------------------------------------------------------
-12.2 Galleries
+== Galleries
 --------------------------------------------------------------*/
 .gallery {
 	margin-bottom: 1.5em;
@@ -906,14 +729,31 @@ object {
 .gallery-caption {
 	display: block;
 }
-/* Portrait */
+
+
+
+
+
+/* 
+== Media Queries 
+*/
 @media screen and (min-width: 650px) {
-    main{
-    	float:left;
-    	width:60%;
-    }
-    aside[role=complementary]{
-    	float:right;
-    	width:35%;
-    }
+	main{
+		float:left;
+		width:60%;
+	}
+	aside[role=complementary]{
+		float:right;
+		width:35%;
+	}
+
+	header[role="banner"]{
+		text-align: center;
+	}
+	.site-branding{
+		min-height: 15.625em;  /*at least as tall as the banner image*/
+	} 
+	.site-branding .site-description{
+		display: none;
+	}
 }

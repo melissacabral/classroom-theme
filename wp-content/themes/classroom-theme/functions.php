@@ -36,7 +36,7 @@ function classroom_theme_setup() {
 	) );
 	add_theme_support( 'custom-background', apply_filters( 'classroom_theme_custom_background_args', array(
 		'default-color' => 'ffffff',
-		'default-image' => '',
+		'default-image' => get_stylesheet_directory_uri() . '/images/default-bg.png',
 	) ) );
 	// This theme uses wp_nav_menu() in two locations.
 	register_nav_menus( array(
@@ -82,7 +82,7 @@ add_action( 'wp_enqueue_scripts', 'classroom_theme_scripts' );
 /**
  * Implement the Custom Header feature.
  */
-//require get_template_directory() . '/inc/custom-header.php';
+require get_template_directory() . '/inc/custom-header.php';
 
 /**
  * Custom template tags for this theme.
@@ -103,3 +103,16 @@ require get_template_directory() . '/inc/customizer.php';
  * Load Jetpack compatibility file.
  */
 require get_template_directory() . '/inc/jetpack.php';
+
+/**
+ * Improve Excerpts
+ * @since  0.1
+ */
+function classroom_theme_ex_length(){
+	return 35; /*words*/
+}
+add_filter('excerpt_length', 'classroom_theme_ex_length' );
+function classroom_theme_ex_more(){
+	return ' <a class="read-more button" href="'.get_permalink().'">Continue Reading&hellip;</a>';
+}
+add_filter( 'excerpt_more', 'classroom_theme_ex_more' );
