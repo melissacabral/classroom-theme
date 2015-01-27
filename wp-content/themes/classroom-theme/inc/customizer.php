@@ -1,26 +1,94 @@
 <?php
 /**
- * Classroom Theme Theme Customizer
+ * Classroom Theme  Customizer - colors and layout
  *
  * @package Classroom Theme
  */
 
-/**
- * Add postMessage support for site title and description for the Theme Customizer.
- *
- * @param WP_Customize_Manager $wp_customize Theme Customizer object.
- */
-function classroom_theme_customize_register( $wp_customize ) {
-	$wp_customize->get_setting( 'blogname' )->transport         = 'postMessage';
-	$wp_customize->get_setting( 'blogdescription' )->transport  = 'postMessage';
-	$wp_customize->get_setting( 'header_textcolor' )->transport = 'postMessage';
-}
-add_action( 'customize_register', 'classroom_theme_customize_register' );
 
-/**
- * Binds JS handlers to make Theme Customizer preview reload changes asynchronously.
- */
-function classroom_theme_customize_preview_js() {
-	wp_enqueue_script( 'classroom_theme_customizer', get_template_directory_uri() . '/js/customizer.js', array( 'customize-preview' ), '20130508', true );
+
+add_action( 'customize_register', 'classroom_theme_theme_customizer' );
+
+function classroom_theme_theme_customizer( $wp_customize ) {
+	//Link color
+	//create the setting and its defaults
+	$wp_customize->add_setting(	'classroom_theme_link_color', array( 'default'     => '#429CA4',	));
+	//add the UI control. this is a color picker control. Attach it to the setting. 
+	$wp_customize->add_control(	new WP_Customize_Color_Control( $wp_customize, 'link_color', array(
+		'label'      => 'Link Color',
+		'section'    => 'colors', //this is one of the panels that is given to you. you can make your own, too. 
+		'settings'   => 'classroom_theme_link_color', //the setting from above that this control controls!
+		)
+	));
+	//Text Color
+	$wp_customize->add_setting(	'classroom_theme_text_color', array(
+		'default'     => '#3B3B3B',
+		));
+	//add the UI control. this is a color picker control. Attach it to the setting. 
+	$wp_customize->add_control(	
+		new WP_Customize_Color_Control( $wp_customize, 'text_color', array(
+			'label'      => 'Body Text Color',
+		'section'    => 'colors', //this is one of the panels that is given to you. you can make your own, too. 
+		'settings'   => 'classroom_theme_text_color', //the setting from above that this control controls!
+		)
+	));
+	//Option - Show or hide logo?
+	$wp_customize->add_section( 'classroom_theme_layout_section' , array(
+		'title'      => 'Layout',
+		'priority'   => 30,) );
+	$wp_customize->add_setting( 'classroom_theme_header_display', array( 'default' => true ) );
+	$wp_customize->add_control(
+		new WP_Customize_Control( $wp_customize, 'header_display', array(
+			'label'          => 'Display Header Text',
+			'section'        => 'classroom_theme_layout_section',
+			'settings'       => 'classroom_theme_header_display',
+			'type'           => 'radio',
+			'choices'        => array(
+				true  => 'Display the Header Text',
+				false  => 'Hide the Header Text',
+				)
+			)
+		)
+	);
+	//Option - Right or left hand sidebar?
+	$wp_customize->add_setting( 'classroom_theme_layout', array( 'default' => 'right' ) );
+	$wp_customize->add_control(
+		new WP_Customize_Control( $wp_customize, 'sidebar_layout', array(
+			'label'          => 'Sidebar Position',
+			'section'        => 'classroom_theme_layout_section',
+			'settings'       => 'classroom_theme_layout',
+			'type'           => 'radio',
+			'choices'        => array(
+				'left'   => 'Left',
+				'right'  => 'Right',
+				)
+			)
+		)
+	);
+
+}	
+function classroom_theme_customizer_css() {
+	?>
+	<style type="text/css">
+		a { color: <?php echo get_theme_mod( 'classroom_theme_link_color' ); ?>;  }
+		body{color: <?php echo get_theme_mod( 'classroom_theme_text_color' ); ?>; }
+		<?php if(get_theme_mod('classroom_theme_header_display' ) == false): ?>
+		.site-title,site-description{
+			display: none;
+		}
+		<?php endif; ?>
+		@media only screen and (min-width : 650px) {
+		<?php if(get_theme_mod('classroom_theme_layout') == 'right'): ?>
+			aside[role=complementary]{float:right;}
+			main{float:left;}
+		<?php else: ?>
+			aside[role=complementary]{float:left;}
+			main{float:right;}
+		<?php endif; ?>
+		}
+
+</style>
+<?php
 }
-add_action( 'customize_preview_init', 'classroom_theme_customize_preview_js' );
+add_action( 'wp_head', 'classroom_theme_customizer_css' );
+//no close PHP

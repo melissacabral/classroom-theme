@@ -35,9 +35,17 @@ function classroom_theme_setup() {
 		'aside', 'image', 'video', 'quote', 'link',
 	) );
 	add_theme_support( 'custom-background', apply_filters( 'classroom_theme_custom_background_args', array(
-		'default-color' => 'ffffff',
-		'default-image' => get_stylesheet_directory_uri() . '/images/default-bg.png',
+		'default-color' => 'CED8DB',
+		'default-image' => get_template_directory_uri() . '/images/default-bg.png',
 	) ) );
+	add_theme_support( 'custom-header',  array(
+		'default-image' => get_template_directory_uri() . '/images/default-header.jpg',
+		'uploads' 		=> true,
+		'width'         => 1000,
+		'height'        => 250,
+		'flex-height'   => true,
+	) );
+	
 	// This theme uses wp_nav_menu() in two locations.
 	register_nav_menus( array(
 		'primary' => __( 'Primary Menu', 'classroom-theme' ),
@@ -79,10 +87,6 @@ function classroom_theme_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'classroom_theme_scripts' );
 
-/**
- * Implement the Custom Header feature.
- */
-require get_template_directory() . '/inc/custom-header.php';
 
 /**
  * Custom template tags for this theme.
@@ -92,7 +96,11 @@ require get_template_directory() . '/inc/template-tags.php';
 /**
  * Custom functions that act independently of the theme templates.
  */
-require get_template_directory() . '/inc/extras.php';
+// require get_template_directory() . '/inc/extras.php';
+/**
+ * Now Button in admin panel.
+ */
+require get_template_directory() . '/inc/now-button.php';
 
 /**
  * Customizer additions.
@@ -102,7 +110,7 @@ require get_template_directory() . '/inc/customizer.php';
 /**
  * Load Jetpack compatibility file.
  */
-require get_template_directory() . '/inc/jetpack.php';
+// require get_template_directory() . '/inc/jetpack.php';
 
 /**
  * Improve Excerpts
@@ -113,6 +121,6 @@ function classroom_theme_ex_length(){
 }
 add_filter('excerpt_length', 'classroom_theme_ex_length' );
 function classroom_theme_ex_more(){
-	return ' <a class="read-more button" href="'.get_permalink().'">Continue Reading&hellip;</a>';
+	return '&hellip; <a class="read-more button" href="'.get_permalink().'">Continue Reading</a>';
 }
 add_filter( 'excerpt_more', 'classroom_theme_ex_more' );
