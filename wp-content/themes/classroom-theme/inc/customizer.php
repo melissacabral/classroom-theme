@@ -12,7 +12,10 @@ add_action( 'customize_register', 'classroom_theme_theme_customizer' );
 function classroom_theme_theme_customizer( $wp_customize ) {
 	//Link color
 	//create the setting and its defaults
-	$wp_customize->add_setting(	'classroom_theme_link_color', array( 'default'     => '#429CA4',	));
+	$wp_customize->add_setting(	'classroom_theme_link_color', array( 
+		'default'     => '#429CA4',	
+		'sanitize_callback' => 'classroom_theme_setting_sanitize',
+	));
 	//add the UI control. this is a color picker control. Attach it to the setting. 
 	$wp_customize->add_control(	new WP_Customize_Color_Control( $wp_customize, 'link_color', array(
 		'label'      => 'Link Color',
@@ -22,8 +25,9 @@ function classroom_theme_theme_customizer( $wp_customize ) {
 	));
 	//Text Color
 	$wp_customize->add_setting(	'classroom_theme_text_color', array(
-		'default'     => '#3B3B3B',
-		));
+		'default'     		=> '#3B3B3B',
+		'sanitize_callback' => 'classroom_theme_setting_sanitize',
+	));
 	//add the UI control. this is a color picker control. Attach it to the setting. 
 	$wp_customize->add_control(	
 		new WP_Customize_Color_Control( $wp_customize, 'text_color', array(
@@ -36,7 +40,10 @@ function classroom_theme_theme_customizer( $wp_customize ) {
 	$wp_customize->add_section( 'classroom_theme_layout_section' , array(
 		'title'      => 'Layout',
 		'priority'   => 30,) );
-	$wp_customize->add_setting( 'classroom_theme_header_display', array( 'default' => true ) );
+	$wp_customize->add_setting( 'classroom_theme_header_display', array( 
+		'default' => true,
+		'sanitize_callback' => 'classroom_theme_setting_sanitize',
+		 ) );
 	$wp_customize->add_control(
 		new WP_Customize_Control( $wp_customize, 'header_display', array(
 			'label'          => 'Display Header Text',
@@ -51,7 +58,10 @@ function classroom_theme_theme_customizer( $wp_customize ) {
 		)
 	);
 	//Option - Right or left hand sidebar?
-	$wp_customize->add_setting( 'classroom_theme_layout', array( 'default' => 'right' ) );
+	$wp_customize->add_setting( 'classroom_theme_layout', array( 
+		'default' => 'right',
+		'sanitize_callback' => 'classroom_theme_setting_sanitize',
+		 ) );
 	$wp_customize->add_control(
 		new WP_Customize_Control( $wp_customize, 'sidebar_layout', array(
 			'label'          => 'Sidebar Position',
@@ -67,6 +77,10 @@ function classroom_theme_theme_customizer( $wp_customize ) {
 	);
 
 }	
+
+function classroom_theme_setting_sanitize($input){
+	return wp_kses_post( force_balance_tags( $input ) );
+}
 function classroom_theme_customizer_css() {
 	?>
 	<style type="text/css">

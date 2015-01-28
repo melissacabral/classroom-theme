@@ -8,7 +8,7 @@ Version: 1.0.0
 License: GNU General Public License v3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: classroom-theme
-Tags:
+Tags: two-columns, three-columns,  left-sidebar, right-sidebar,  fluid-layout, responsive-layout, accessibility-ready, custom-background, custom-colors, custom-header, custom-menu, editor-style,  featured-images, flexible-header,  full-width-template, microformats, post-formats,  sticky-post, theme-options, threaded-comments, translation-ready
 */
 
 /*--------------------------------------------------------------
@@ -46,7 +46,7 @@ html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:1
 #page{
 	background-color: white;
 }
-aside[role=complementary],
+
 footer[role=contentinfo]
 {
 	background-color: rgba(0,0,0,.1);
@@ -56,14 +56,15 @@ footer[role=contentinfo]
 */
 
 #page{
-	max-width: 62.5em;
+	max-width: 80em;
 	margin: 0 auto;
 }
+/*gutters*/
 header[role="banner"] .site-title,
-aside[role=complementary],
-footer[role=contentinfo],
+
 main{
 	padding:2%;
+
 }
 header[role="banner"]{
 	text-align: center;
@@ -362,26 +363,26 @@ a:active {
 5.2 Menus
 --------------------------------------------------------------*/
 .main-navigation {
-		clear: both;
-		display: block;
-		width: 100%;
-	}
+	clear: both;
+	display: block;
+	width: 100%;
+}
 
-	.main-navigation ul {
-		list-style: none;
-		margin: 0;
-		padding-left: 0;
-	}
+.main-navigation ul {
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
+}
 
-	.main-navigation li {
-		float: left;
-		position: relative;
-	}
+.main-navigation li {
+	float: left;
+	position: relative;
+}
 
-	.main-navigation a {
-		display: block;
-		text-decoration: none;
-	}
+.main-navigation a {
+	display: block;
+	text-decoration: none;
+}
 
 
 /* Small menu. */
@@ -439,7 +440,7 @@ a:active {
 }
 
 /*--------------------------------------------------------------
-6.0 Accessibility
+== Accessibility
 --------------------------------------------------------------*/
 /* Text meant only for screen readers. */
 .screen-reader-text {
@@ -473,29 +474,29 @@ a:active {
 }
 
 /*--------------------------------------------------------------
-7.0 Alignments
---------------------------------------------------------------*/
-.alignleft {
-	display: inline;
-	float: left;
-	margin-right: 1.5em;
-}
+ == Alignments required WP css
+ --------------------------------------------------------------*/
+ .alignleft {
+ 	display: inline;
+ 	float: left;
+ 	margin-right: 1.5em;
+ }
 
-.alignright {
-	display: inline;
-	float: right;
-	margin-left: 1.5em;
-}
+ .alignright {
+ 	display: inline;
+ 	float: right;
+ 	margin-left: 1.5em;
+ }
 
-.aligncenter {
-	clear: both;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-}
+ .aligncenter {
+ 	clear: both;
+ 	display: block;
+ 	margin-left: auto;
+ 	margin-right: auto;
+ }
 
 /*--------------------------------------------------------------
-8.0 Clearings
+== Clearings
 --------------------------------------------------------------*/
 .clear:before,
 .clear:after,
@@ -523,21 +524,85 @@ a:active {
 }
 
 /*--------------------------------------------------------------
-9.0 Widgets
+== Widgets
 --------------------------------------------------------------*/
-.widget {
-	margin: 0 0 1.5em;
+.widget{
+	width:250px;
+	background-color: rgba(0,0,0,.05);
+
 }
+
+
+.widget .widget-content{
+	padding:1em;
+}
+.widget .widget-title{
+	font-size:1.2em;
+	margin-bottom:.5em;
+	padding:0;
+}
+
 
 /* Make sure select elements fit in widgets. */
 .widget select {
-	max-width: 100%;
+	width: 100%;
+
+	padding:.5em;
 }
 
 /* Search widget. */
 .widget_search .search-submit {
 	display: none;
 }
+/*list widgets*/
+.widget ul{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+.widget ul li{
+	padding: 0 0 .5em 1.3em;
+	position: relative;
+}
+.widget ul li:before{
+	content: '';
+	width:0;
+	height: 0;
+	
+	border-left:.5em solid rgba(0,0,0,.15);
+	border-top:.4em solid transparent;
+	border-bottom:.4em solid transparent;
+	position: absolute;
+	top:.35em;
+	left:.2em;
+
+}
+.widget .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu  li{
+	padding: 0;
+}
+.widget .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu li:before{
+	display: none;
+}
+.widget_calendar table{
+	font-family: Montserrat;
+	 border-collapse: separate;
+	  border-spacing: 3px;
+	  *border-collapse: expression('separate', cellSpacing = '3px');
+} 
+.widget_calendar caption{
+	font-family: "Droid Serif";
+	font-style: italic;
+} 
+.widget_calendar td{
+background-color: rgba(255,255,255,.7);
+border:solid 2px transparent;
+} 
+.widget_calendar #prev,
+.widget_calendar #next,
+.widget_calendar tfoot .pad{
+	background-color: transparent;
+}
+
 
 /*--------------------------------------------------------------
 == Content
@@ -551,6 +616,9 @@ a:active {
 	background-color: rgba(0,0,0,.1);
 	border:solid 1px rgba(0,0,0,.2);
 }
+.entry-title{
+	font-size:1.4em;
+}
 
 .byline,
 .updated:not(.published) {
@@ -562,11 +630,21 @@ a:active {
 	display: inline;
 }
 
-
-
 .page-links {
 	clear: both;
 	margin: 0 0 1.5em;
+}
+/*post content typography TODO: editor-style*/
+.hentry  td, .hentry th{
+background-color: rgba(0,0,0,.05);
+padding:.25em .4em;
+vertical-align: top;
+border-top:solid 3px #ffffff;
+}
+.hentry th{
+	font-weight: bold;
+	background-color: rgba(0,0,0,.1);
+	text-align: left;
 }
 
 /*--------------------------------------------------------------
@@ -590,7 +668,7 @@ a:active {
 
 /*--------------------------------------------------------------
 ==  Infinite scroll
-TODO: figure out what this is
+TODO: figure out how this works
 --------------------------------------------------------------*/
 /* Globally hidden elements when Infinite Scroll is supported and in use. */
 .infinite-scroll .posts-navigation, /* Older / Newer Posts Navigation (always hidden) */
@@ -696,10 +774,10 @@ object {
 
 
 
-
 /* 
 == Media Queries 
 */
+
 @media screen and (min-width: 650px) {
 	main{
 		float:left;
