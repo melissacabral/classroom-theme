@@ -15,15 +15,13 @@
  * @uses classroom_theme_admin_header_image()
  */
 function classroom_theme_custom_header_setup() {
-	add_theme_support( 'custom-header', apply_filters( 'classroom_theme_custom_header_args', array(
-		'default-image'          => get_stylesheet_directory_uri() . '/images/default-header.jpg',
-	
+	add_theme_support( 'custom-header', apply_filters( 'classroom_theme_custom_header_args', array(		
 		'width'                  => 1000,
 		'height'                 => 250,
 		'flex-height'            => true,
-		// 'wp-head-callback'       => 'classroom_theme_header_style',
-		// 'admin-head-callback'    => 'classroom_theme_admin_header_style',
-		// 'admin-preview-callback' => 'classroom_theme_admin_header_image',
+		'wp-head-callback'       => 'classroom_theme_header_style',
+		'admin-head-callback'    => 'classroom_theme_admin_header_style',
+		'admin-preview-callback' => 'classroom_theme_admin_header_image',
 	) ) );
 }
 add_action( 'after_setup_theme', 'classroom_theme_custom_header_setup' );

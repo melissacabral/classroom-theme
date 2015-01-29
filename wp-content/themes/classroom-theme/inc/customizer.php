@@ -40,23 +40,8 @@ function classroom_theme_theme_customizer( $wp_customize ) {
 	$wp_customize->add_section( 'classroom_theme_layout_section' , array(
 		'title'      => 'Layout',
 		'priority'   => 30,) );
-	$wp_customize->add_setting( 'classroom_theme_header_display', array( 
-		'default' => true,
-		'sanitize_callback' => 'classroom_theme_setting_sanitize',
-		 ) );
-	$wp_customize->add_control(
-		new WP_Customize_Control( $wp_customize, 'header_display', array(
-			'label'          => 'Display Header Text',
-			'section'        => 'classroom_theme_layout_section',
-			'settings'       => 'classroom_theme_header_display',
-			'type'           => 'radio',
-			'choices'        => array(
-				true  => 'Display the Header Text',
-				false  => 'Hide the Header Text',
-				)
-			)
-		)
-	);
+
+	
 	//Option - Right or left hand sidebar?
 	$wp_customize->add_setting( 'classroom_theme_layout', array( 
 		'default' => 'right',

@@ -1,0 +1,92 @@
+<?php /*
+Plugin Name: Company Options Page
+Plugin URI: http://wordpress.melissacabral.com
+Description: Adds a sub-page under Settings for company info
+Version: 1
+Author: Melissa Cabral
+Author URI: http://melissacabral.com
+License: GPLv2
+*/
+
+//whitelist our group of options so WP knows they exist
+function rad_options_register(){
+	//register_setting(name of group, DB entry,  validator callback)
+	register_setting('rad_options_group', 'rad_options', 'rad_options_validate');	
+}
+add_action( 'admin_init', 'rad_options_register' );
+
+
+//add the page to the admin menu to hold our form
+function rad_options_add_page(){
+	//add_options_page(title, menu name, capability, slug, form callback);
+	add_options_page('Company Information', 'Company Info', 'manage_options', 'rad-options-page', 'rad_options_build_form');
+}
+add_action( 'admin_menu', 'rad_options_add_page' );
+
+
+//Draw the form for the page (name must match callback above)
+function rad_options_build_form(){ ?>
+	<div class="wrap">
+		<h2>Company Information</h2>
+		<form method="post" action="options.php"><!-- always use options.php when parsing options with WP -->
+		<?php 
+		//must match the name of the group from the register settings step. this associates the settings row to this form
+		settings_fields( 'rad_options_group' ); 
+		
+		//get current values from DB to prefill the form (use the DB row name)
+		$values = get_option( 'rad_options' );
+		?>
+		
+		
+		<p>
+		<label>Company Phone <br />
+			<input type="text" name="rad_options[company_phone]" size="45" value="" />
+		</label>
+		</p>
+		<p>
+		<label>Customer Support Email Address <br />
+			<input type="text" name="rad_options[support_email]" size="45" value="" />
+		</label>
+		</p>
+		<p>
+		<label>Company Address <br />
+			<textarea name="rad_options[company_address]" cols="45" rows="5"></textarea>
+		</label>
+		</p>
+		
+		<hr />
+		
+		<p>
+		<label>Welcome Message (quote) <br />
+			<textarea name="rad_options[welcome_message]" cols="45" rows="5"></textarea>
+		</label>
+		</p>
+		<p>
+		<label>Quote Source <br />
+			<input type="text" name="rad_options[message_source]" size="45" value="" />
+		</label>
+		</p>
+		<p>
+		<label>
+			<input type="checkbox" name="rad_options[show_quote]" value="1" /> 
+			Show the Quote
+		</label>
+		</p>
+		<p class="submit">
+			<input type="submit" value="Save Changes" class="button-primary" />
+		</p>		
+			
+		</form>
+	</div>
+<?php }
+
+//sanitize all data from the form. must match the callback from register_setting
+function rad_options_validate($input){
+	return $input;
+}
+
+
+
+
+
+

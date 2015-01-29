@@ -38,13 +38,7 @@ function classroom_theme_setup() {
 		'default-color' => 'CED8DB',
 		'default-image' => get_template_directory_uri() . '/images/default-bg.png',
 	) ) );
-	add_theme_support( 'custom-header',  array(
-		'default-image' => get_template_directory_uri() . '/images/default-header.jpg',
-		'uploads' 		=> true,
-		'width'         => 1000,
-		'height'        => 250,
-		'flex-height'   => true,
-	) );
+
 	add_editor_style();
 	
 	// This theme uses wp_nav_menu() in two locations.
@@ -120,6 +114,7 @@ require get_template_directory() . '/inc/now-button.php';
  * Customizer additions.
  */
 require get_template_directory() . '/inc/customizer.php';
+require get_template_directory() . '/inc/custom-header.php';
 
 /**
  * Load Jetpack compatibility file.

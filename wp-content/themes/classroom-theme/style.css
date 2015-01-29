@@ -46,6 +46,9 @@ html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:1
 #page{
 	background-color: white;
 }
+header[role=banner]{
+	background-color: #EE6A6A
+}
 
 footer[role=contentinfo]
 {
@@ -123,7 +126,8 @@ h6 {
 	font-family: Montserrat, Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;
 	clear: both;
 	margin: 0;
-	padding: .25em 0
+	padding: .25em 0;
+	text-rendering: optimizelegibility;
 }
 
 p {
