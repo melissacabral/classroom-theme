@@ -25,15 +25,15 @@ function the_posts_navigation() {
 
 			<?php if ( get_next_posts_link() ) : ?>
 			<div class="nav-previous"><?php next_posts_link( __( 'Older posts', 'classroom-theme' ) ); ?></div>
-			<?php endif; ?>
+		<?php endif; ?>
 
-			<?php if ( get_previous_posts_link() ) : ?>
-			<div class="nav-next"><?php previous_posts_link( __( 'Newer posts', 'classroom-theme' ) ); ?></div>
-			<?php endif; ?>
+		<?php if ( get_previous_posts_link() ) : ?>
+		<div class="nav-next"><?php previous_posts_link( __( 'Newer posts', 'classroom-theme' ) ); ?></div>
+	<?php endif; ?>
 
-		</div><!-- .nav-links -->
-	</nav><!-- .navigation -->
-	<?php
+</div><!-- .nav-links -->
+</nav><!-- .navigation -->
+<?php
 }
 endif;
 
@@ -56,8 +56,8 @@ function the_post_navigation() {
 		<h2 class="screen-reader-text"><?php _e( 'Post navigation', 'classroom-theme' ); ?></h2>
 		<div class="nav-links">
 			<?php
-				previous_post_link( '<div class="nav-previous">%link</div>', '%title' );
-				next_post_link( '<div class="nav-next">%link</div>', '%title' );
+			previous_post_link( '<div class="nav-previous">%link</div>', '%title' );
+			next_post_link( '<div class="nav-next">%link</div>', '%title' );
 			?>
 		</div><!-- .nav-links -->
 	</nav><!-- .navigation -->
@@ -65,45 +65,62 @@ function the_post_navigation() {
 }
 endif;
 
+function classroom_show_duedate(){
+
+	$date = get_field('due_date');
+	// $date = 19881123 (23/11/1988)
+	if($date):
+		// extract Y,M,D
+		$y = substr($date, 0, 4);
+	$m = substr($date, 4, 2);
+	$d = substr($date, 6, 2);
+
+		// create UNIX
+	$time = strtotime("{$d}-{$m}-{$y}");		
+
+		// format date (November 11th 1988)
+	echo 'Due ' . date('F n', $time);
+	endif;
+}
 
 
-if ( ! function_exists( 'classroom_theme_entry_footer' ) ) :
 /**
- * Prints HTML with meta information for the date, categories, tags and comments.
+ * Prints HTML with meta information for the date, categories and comments.
  */
-function classroom_theme_entry_footer() {
+function classroom_theme_entry_meta() {
 
 	if( date('Yz') == get_the_time('Yz') ) {
 
-			$class='post-meta posted-today';
-			$date = 'today';
-		}else{
-			$class='post-meta';
-			$date = human_time_diff( get_the_time('U'), current_time('timestamp') ) . ' ago'; 
-		}	
+		$class='post-meta posted-today';
+		$date = 'today';
+	}else{
+		$class='post-meta';
+		$date = human_time_diff( get_the_time('U'), current_time('timestamp') ) . ' ago'; 
+	}	
 	
 
 
 	// Hide category and tag text for pages.
-	if ( 'post' == get_post_type() ) {
+	if ( 'post' == get_post_type() ) :
 		echo '<section class="' . $class . '">';
 
-		echo '<a href="'. get_permalink() . '"><time datetime="'.get_the_time('F jS, Y').'">';
-		echo $date;
-		echo '</time></a>';
-		/* translators: used between list items, there is a space after the comma */
-		$categories_list = get_the_category_list( __( ', ', 'classroom-theme' ) );
-		if ( $categories_list && classroom_theme_categorized_blog() ) {
-			printf( '<span class="cat-links">' . __( 'Posted in %1$s', 'classroom-theme' ) . '</span>', $categories_list );
-		}
+	echo '<a href="'. get_permalink() . '"><time datetime="'.get_the_time('F jS, Y').'">';
+	echo 'Posted ' . $date;
+	echo '</time></a>';
 
-		/* translators: used between list items, there is a space after the comma */
-		$tags_list = get_the_tag_list( '', __( ', ', 'classroom-theme' ) );
-		if ( $tags_list ) {
-			printf( '<span class="tags-links">' . __( 'Tagged %1$s', 'classroom-theme' ) . '</span>', $tags_list );
-		}
-		echo '</section>';
-	}
+
+
+	/* translators: used between list items, there is a space after the comma */
+	$categories_list = get_the_category_list( __( ', ', 'classroom-theme' ) );
+	if ( $categories_list && classroom_theme_categorized_blog() ) {
+		printf( '<span class="cat-links">' . __( ' in %1$s', 'classroom-theme' ) . '</span>', $categories_list );
+	} 
+
+	classroom_show_duedate();
+
+
+	echo '</section>';
+	endif;
 
 	if ( ! is_single() && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
 		echo '<span class="comments-link">';
@@ -113,7 +130,56 @@ function classroom_theme_entry_footer() {
 
 	edit_post_link( __( 'Edit', 'classroom-theme' ), '<span class="edit-link">', '</span>' );
 }
-endif;
+
+
+function classroom_theme_entry_footer() {
+	/* translators: used between list items, there is a space after the comma */
+	$tags_list = get_the_tag_list( '', __( ', ', 'classroom-theme' ) );
+	if ( $tags_list ) {
+		printf( '<span class="tags-links">' . __( 'Tagged %1$s', 'classroom-theme' ) . '</span>', $tags_list );
+	}
+}
+function classroom_due_today(){
+
+	$today = date('Ymd'); 
+
+	$args = array (
+		'post_type' => array('post','page'),
+		'meta_query' => array(
+			array(
+				'key'		=> 'due_date',
+				'compare'	=> '==',
+				'value'		=> $today,
+				),
+			// array(
+			// 	'key'		=> 'due_date',
+			// 	'compare'	=> '>=',
+			// 	'value'		=> $today,
+			// 	)
+			),
+		);
+	$q = new WP_Query($args);
+	if($q->have_posts()){
+		?>
+		<section class="widget">
+			<div class="widget-content">
+			<h2 class="widget-title">Due Today:</h2>
+			<?php
+			while($q->have_posts()){
+				$q->the_post();
+				the_title();
+			}
+			?>
+		</div>
+		</section>
+		<?php
+	}
+}
+
+
+
+
+
 
 if ( ! function_exists( 'the_archive_title' ) ) :
 /**
@@ -209,6 +275,7 @@ function the_archive_description( $before = '', $after = '' ) {
 }
 endif;
 
+
 /**
  * Returns true if a blog has more than 1 category.
  *
@@ -223,7 +290,7 @@ function classroom_theme_categorized_blog() {
 
 			// We only need to know if there is more than one category.
 			'number'     => 2,
-		) );
+			) );
 
 		// Count the number of categories that are attached to the posts.
 		$all_the_cool_cats = count( $all_the_cool_cats );

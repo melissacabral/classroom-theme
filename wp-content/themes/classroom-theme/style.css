@@ -894,10 +894,10 @@ object {
 		width:30%;
 	}
 	.blog .post{
-		padding-left: 20%;
+	
 	}
 	.blog .post.has-post-thumbnail{
-		padding-right: 27% ;
+		
 	}
 	.blog .post .wp-post-image{
 		display: block;
@@ -908,22 +908,14 @@ object {
 		top:0;
 		right:0;
 	}
-	.post-meta time{
-		display: block;
-		margin-bottom:2em;
-	}
-	.post-meta span{
-		display: block;
-		margin-bottom:.5em;
-	}
+	
 	.blog .post .post-meta{
 		background-color: #EEEEEE;
 		display: block;
-		position: absolute;
+		
 		height: 100%;
-		width:18%;
-		top:0;
-		left:0;
+		
+	
 		text-align: center;
 		padding:2em 1em ;
 		font-size:.8em;

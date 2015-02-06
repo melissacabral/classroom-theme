@@ -4,12 +4,11 @@
  *
  * @package Classroom Theme
  */
-
-if ( ! is_active_sidebar( 'global-sidebar' ) ) {
-	return;
-}
 ?>
 
+
+
 <aside id="secondary" class="widget-area" role="complementary">
+		<?php classroom_due_today() ?>
 	<?php dynamic_sidebar( 'global-sidebar' ); ?>
 </aside><!-- #secondary -->

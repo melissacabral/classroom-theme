@@ -7,16 +7,17 @@ Major items
 * full width page template
 * links page template
 * archive navigation
+* ACF integration
 
 
 
-Minor Items
+ Items
 ====
 
-* don't load header img on mobile
+* test defaults on clean install
 * Theme Check when finished
 
 Bugs
 ===
 
-* get custom header default to work
+
