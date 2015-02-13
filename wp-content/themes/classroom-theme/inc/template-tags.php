@@ -64,7 +64,10 @@ function the_post_navigation() {
 	<?php
 }
 endif;
-
+/**
+ * Get the due date custom field from the post 
+ * @return [type] [description]
+ */
 function classroom_show_duedate(){
 
 	$date = get_field('due_date');
@@ -82,19 +85,26 @@ function classroom_show_duedate(){
 	echo 'Due ' . date('F n', $time);
 	endif;
 }
+/**
+ * Add "today" class to post_class if the post was published today.
+ */
+add_filter('post_class', 'classroom_theme_post_class' );
+function classroom_theme_post_class($classes){
 
+	if( date('Yz') == get_the_time('Yz') ) {
+		$classes[] = 'posted-today';
+	}	
+	return $classes;
+}
 
 /**
  * Prints HTML with meta information for the date, categories and comments.
  */
 function classroom_theme_entry_meta() {
 
-	if( date('Yz') == get_the_time('Yz') ) {
-
-		$class='post-meta posted-today';
+	if( date('Yz') == get_the_time('Yz') ) {		
 		$date = 'today';
-	}else{
-		$class='post-meta';
+	}else{	
 		$date = human_time_diff( get_the_time('U'), current_time('timestamp') ) . ' ago'; 
 	}	
 	
@@ -102,10 +112,10 @@ function classroom_theme_entry_meta() {
 
 	// Hide category and tag text for pages.
 	if ( 'post' == get_post_type() ) :
-		echo '<section class="' . $class . '">';
+	echo '<header class="entry-header" >';
 
-	echo '<a href="'. get_permalink() . '"><time datetime="'.get_the_time('F jS, Y').'">';
-	echo 'Posted ' . $date;
+	echo '<a class="post-date" href="'. get_permalink() . '"><time datetime="'.get_the_time('F jS, Y').'">';
+	echo $date;
 	echo '</time></a>';
 
 
@@ -113,22 +123,14 @@ function classroom_theme_entry_meta() {
 	/* translators: used between list items, there is a space after the comma */
 	$categories_list = get_the_category_list( __( ', ', 'classroom-theme' ) );
 	if ( $categories_list && classroom_theme_categorized_blog() ) {
-		printf( '<span class="cat-links">' . __( ' in %1$s', 'classroom-theme' ) . '</span>', $categories_list );
+		printf( '<span class="cat-links">' . __( '%1$s', 'classroom-theme' ) . '</span>', $categories_list );
 	} 
 
 	classroom_show_duedate();
 
 
-	echo '</section>';
-	endif;
-
-	if ( ! is_single() && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
-		echo '<span class="comments-link">';
-		comments_popup_link( __( 'Leave a comment', 'classroom-theme' ), __( '1 Comment', 'classroom-theme' ), __( '% Comments', 'classroom-theme' ) );
-		echo '</span>';
-	}
-
-	edit_post_link( __( 'Edit', 'classroom-theme' ), '<span class="edit-link">', '</span>' );
+	echo '</header>';
+	endif;	
 }
 
 
@@ -138,6 +140,14 @@ function classroom_theme_entry_footer() {
 	if ( $tags_list ) {
 		printf( '<span class="tags-links">' . __( 'Tagged %1$s', 'classroom-theme' ) . '</span>', $tags_list );
 	}
+
+	if ( ! is_single() && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
+		echo '<span class="comments-link">';
+		comments_popup_link( __( 'Leave a comment', 'classroom-theme' ), __( '1 Comment', 'classroom-theme' ), __( '% Comments', 'classroom-theme' ) );
+		echo '</span>';
+	}
+
+	edit_post_link( __( 'Edit', 'classroom-theme' ), '<span class="edit-link">', '</span>' );
 }
 function classroom_due_today(){
 
@@ -163,14 +173,14 @@ function classroom_due_today(){
 		?>
 		<section class="widget">
 			<div class="widget-content">
-			<h2 class="widget-title">Due Today:</h2>
-			<?php
-			while($q->have_posts()){
-				$q->the_post();
-				the_title();
-			}
-			?>
-		</div>
+				<h2 class="widget-title">Due Today:</h2>
+				<?php
+				while($q->have_posts()){
+					$q->the_post();
+					the_title();
+				}
+				?>
+			</div>
 		</section>
 		<?php
 	}
