@@ -20,8 +20,7 @@
 	<div id="page" class="hfeed site">
 		<a class="skip-link screen-reader-text" href="#content"><?php _e( 'Skip to content', 'classroom-theme' ); ?></a>
 
-		<header id="masthead" class="site-header" role="banner">
-		
+		<header id="masthead" class="site-header" role="banner">		
 		
 		<div class="site-branding" <?php if ( get_header_image() ) : ?> style="background-size:cover;background-image:url(<?php header_image(); ?>)"<?php endif; // End header image check. ?>>
 			<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>

@@ -81,7 +81,7 @@ function classroom_theme_widgets_init() {
  * Enqueue scripts and styles.
  */
 function classroom_theme_scripts() {
-	wp_enqueue_style( 'classroom-theme-style', get_stylesheet_uri() );
+	wp_enqueue_style( 'classroom-theme-style', get_stylesheet_uri(), array('dashicons'), '1.0.0' );
 	wp_enqueue_script( 'jquery' );	
 	wp_enqueue_script( 'classroom-theme-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20120206', true );
 	wp_enqueue_script( 'classroom-theme-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20130115', true );
@@ -133,3 +133,78 @@ function classroom_theme_ex_more(){
 	return '&hellip; <a class="read-more button" href="'.get_permalink().'">Continue Reading</a>';
 }
 add_filter( 'excerpt_more', 'classroom_theme_ex_more' );
+
+
+/**
+* Registers a new post type
+* @uses $wp_post_types Inserts new post type object into the list
+*
+* @param string  Post type key, must not exceed 20 characters
+* @param array|string  See optional args description above.
+* @return object|WP_Error the registered post type object, or an error object
+*/
+function classroom_register_links() {
+
+	$labels = array(
+		'name'                => __( 'Resource Links', 'classroom_theme' ),
+		'singular_name'       => __( 'Resource Link', 'classroom_theme' ),
+		'add_new'             => _x( 'Add New Resource Link', 'classroom_theme', 'classroom_theme' ),
+		'add_new_item'        => __( 'Add New Resource Link', 'classroom_theme' ),
+		'edit_item'           => __( 'Edit Resource Link', 'classroom_theme' ),
+		'new_item'            => __( 'New Resource Link', 'classroom_theme' ),
+		'view_item'           => __( 'View Resource Link', 'classroom_theme' ),
+		'search_items'        => __( 'Search Resource Links', 'classroom_theme' ),
+		'not_found'           => __( 'No Resource Links found', 'classroom_theme' ),
+		'not_found_in_trash'  => __( 'No Resource Links found in Trash', 'classroom_theme' ),
+		'menu_name'           => __( 'Resource Links', 'classroom_theme' ),
+	);
+
+	$args = array(
+		'labels'                   => $labels,
+	
+		'description'         => 'For Sharing helpful links with your users',
+		'taxonomies'          => array(),
+		'public'              => true,
+		'menu_icon'           => 'dashicons-admin-links',
+		'show_in_nav_menus'   => true,
+		'has_archive'		=> true,
+		'publicly_queryable'  => true,
+		'exclude_from_search' => true,
+		
+		'supports'            => array(	'title',  'thumbnail' )
+	);
+
+	register_post_type( 'link', $args );
+
+	/*Taxonomy*/
+	$labels = array(
+		'name'					=> _x( 'Link Categories', 'Taxonomy Link Categories', 'classroom-theme' ),
+		'singular_name'			=> _x( 'Link Category', 'Taxonomy Link Category', 'classroom-theme' ),
+		'search_items'			=> __( 'Search Link Categories', 'classroom-theme' ),
+		'popular_items'			=> __( 'Popular Link Categories', 'classroom-theme' ),
+		'all_items'				=> __( 'All Link Categories', 'classroom-theme' ),
+		'parent_item'			=> __( 'Parent Link Category', 'classroom-theme' ),
+		'parent_item_colon'		=> __( 'Parent Link Category', 'classroom-theme' ),
+		'edit_item'				=> __( 'Edit Link Category', 'classroom-theme' ),
+		'update_item'			=> __( 'Update Link Category', 'classroom-theme' ),
+		'add_new_item'			=> __( 'Add New Link Category', 'classroom-theme' ),
+		'new_item_name'			=> __( 'New Link Category Name', 'classroom-theme' ),
+		'add_or_remove_items'	=> __( 'Add or remove Link Categories', 'classroom-theme' ),
+		'choose_from_most_used'	=> __( 'Choose from most used classroom-theme', 'classroom-theme' ),
+		'menu_name'				=> __( 'Link Category', 'classroom-theme' ),
+	);
+
+	$args = array(
+		'labels'            => $labels,
+		'public'            => true,
+		'show_in_nav_menus' => true,
+		'show_admin_column' => true,
+		'hierarchical'      => true,
+		'capabilities' => array(),
+	);
+
+	register_taxonomy( 'link-category', array( 'link' ), $args );
+	
+}
+
+add_action( 'init', 'classroom_register_links' );

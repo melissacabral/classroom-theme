@@ -7,21 +7,27 @@
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<header class="entry-header">
-		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
-	</header><!-- .entry-header -->
+	
+	<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
 
 	<div class="entry-content">
+		<?php classroom_important_text(); ?>
 		<?php the_content(); ?>
-		<?php
-			wp_link_pages( array(
-				'before' => '<div class="page-links">' . __( 'Pages:', 'classroom-theme' ),
-				'after'  => '</div>',
-			) );
-		?>
-	</div><!-- .entry-content -->
+		
+		<div class="entry-asides">
+			<?php classroom_file_attachments(); ?>
+			<?php classroom_related_reading(); ?>
+		</div>
 
-	<footer class="entry-footer">
-		<?php edit_post_link( __( 'Edit', 'classroom-theme' ), '<span class="edit-link">', '</span>' ); ?>
-	</footer><!-- .entry-footer -->
-</article><!-- #post-## -->
+		<?php
+		wp_link_pages( array(
+			'before' => '<div class="page-links">' . __( 'Pages:', 'classroom-theme' ),
+			'after'  => '</div>',
+			) );
+			?>
+		</div><!-- .entry-content -->
+
+		<footer class="entry-footer">
+			<?php classroom_theme_entry_footer(); ?>
+		</footer><!-- .entry-footer -->
+	</article><!-- #post-## -->

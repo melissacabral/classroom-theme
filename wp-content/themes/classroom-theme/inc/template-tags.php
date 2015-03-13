@@ -65,26 +65,64 @@ function the_post_navigation() {
 }
 endif;
 /**
- * Get the due date custom field from the post 
+ * Display the due date custom field from the post 
  * @return [type] [description]
  */
-function classroom_show_duedate(){
+function classroom_show_duedate($text = 'Due '){
+	global $post;
 
-	$date = get_field('due_date');
+	//get due date custom field 
+	$date = get_post_meta( $post->ID, 'due_date', true);
+
+	// $date = 19881123 (23/11/1988)
+	if($date):
+		echo '<span class="due-date">' . $text .  classroom_get_duedate() . '</span>';
+	endif;
+}
+function classroom_get_duedate( $unix = 0 ){
+	global $post;
+
+	//get due date custom field 
+	$date = get_post_meta( $post->ID, 'due_date', true);
+
 	// $date = 19881123 (23/11/1988)
 	if($date):
 		// extract Y,M,D
 		$y = substr($date, 0, 4);
-	$m = substr($date, 4, 2);
-	$d = substr($date, 6, 2);
+		$m = substr($date, 4, 2);
+		$d = substr($date, 6, 2);
 
 		// create UNIX
-	$time = strtotime("{$d}-{$m}-{$y}");		
+		$time = strtotime("{$d}-{$m}-{$y}");		
 
 		// format date (November 11th 1988)
-	echo 'Due ' . date('F n', $time);
+		if($unix):
+			return $time;
+		else:
+			return  date('F j', $time);
+		endif;
 	endif;
 }
+/**
+ * Counts the number of days between 2  timestamps
+ * @return [type] [description]
+ */
+function classroom_count_days($from, $to){
+	
+	$from_date = new DateTime($from);
+	$to_date = new DateTime($to);
+	$output =  $from_date->diff($to_date)->days;
+
+	if($output == 1) :
+		$output .= ' day';
+	elseif($output == 0):
+		$output = '<b>Today!</b>';
+	else:
+		$output .= ' days';
+	endif;
+	return $output;
+}
+
 /**
  * Add "today" class to post_class if the post was published today.
  */
@@ -101,18 +139,18 @@ function classroom_theme_post_class($classes){
  * Prints HTML with meta information for the date, categories and comments.
  */
 function classroom_theme_entry_meta() {
-
+	// Show the date posted
 	if( date('Yz') == get_the_time('Yz') ) {		
-		$date = 'today';
+		$date = 'Posted today';
 	}else{	
-		$date = human_time_diff( get_the_time('U'), current_time('timestamp') ) . ' ago'; 
+		$date = 'Posted ' . human_time_diff( get_the_time('U'), current_time('timestamp') ) . ' ago'; 
 	}	
 	
 
 
-	// Hide category and tag text for pages.
+	// Show the date of the post
 	if ( 'post' == get_post_type() ) :
-	echo '<header class="entry-header" >';
+		echo '<header class="entry-header" >';
 
 	echo '<a class="post-date" href="'. get_permalink() . '"><time datetime="'.get_the_time('F jS, Y').'">';
 	echo $date;
@@ -149,23 +187,27 @@ function classroom_theme_entry_footer() {
 
 	edit_post_link( __( 'Edit', 'classroom-theme' ), '<span class="edit-link">', '</span>' );
 }
+/**
+ * Generates a list of posts "due today" based on Due Date custom field
+ * @return HTML list output
+ */
 function classroom_due_today(){
-
-	$today = date('Ymd'); 
+	// $today = date('Ymd'); 
+	$today = current_time( 'Ymd' , 0);
 
 	$args = array (
 		'post_type' => array('post','page'),
+		'ignore_sticky_posts' => 1,
+		'order' => 'ASC',
+		'orderby'   => 'meta_value_num',
+		'meta_key'  => 'due_date',
 		'meta_query' => array(
 			array(
 				'key'		=> 'due_date',
-				'compare'	=> '==',
+				'compare'	=> '>=',
 				'value'		=> $today,
 				),
-			// array(
-			// 	'key'		=> 'due_date',
-			// 	'compare'	=> '>=',
-			// 	'value'		=> $today,
-			// 	)
+			
 			),
 		);
 	$q = new WP_Query($args);
@@ -173,22 +215,126 @@ function classroom_due_today(){
 		?>
 		<section class="widget">
 			<div class="widget-content">
-				<h2 class="widget-title">Due Today:</h2>
-				<?php
-				while($q->have_posts()){
-					$q->the_post();
-					the_title();
-				}
-				?>
-			</div>
+				<h2 class="widget-title">Upcoming Deadlines:</h2>
+				
+				<ul>
+					<?php
+					while($q->have_posts()){
+						$q->the_post();
+						?>
+						<li>
+							<a href="<?php the_permalink(); ?>">
+								<?php classroom_show_duedate(''); ?>:
+								<?php the_title(); ?>
+							</a>
+						</li>
+						<?php
+					}
+					?></ul>
+				</div>
+			</section>
+			<?php
+		}
+	}
+
+/**
+ * Displays the content from the 'important' custom field. use within the loop
+ * @return string  HTML output
+ */
+function classroom_important_text(){
+	global $post;
+	$content  = get_post_meta($post->ID, 'important', true );
+	if($content){
+		?> 
+		<section class="important-content">
+			<?php echo $content; ?>
 		</section>
-		<?php
+		<?php 
+	}else{
+		return false;
 	}
 }
+/**
+ * Display file attachments for this post. use within the loop
+ * @return string HTML link to file
+ */
+function classroom_file_attachments(){
+
+	global $post;
+	//list of recognized dashicons => mime types. 
+	$mimes = array(
+			'application/x-photoshop'	=>	'media-format-image' ,
+			'application/zip'			=> 'media-archive',
+			'application/vnd.ms-excel'	=> 'media-spreadsheet',
+			'application/vnd.ms-powerpoint'	=> 'media-interactive'	,
+			'application/msword'			=> 'media-document',
+			'application/vnd.openxmlformats-officedocument.wordprocessingml.document'			=> 'media-document',	
+			'application/pdf'				=> 'media-document' ,					
+			'text/plain'				=> 'media-text' ,
+			'application/x-javascript' 	=> 'media-code',
+			'audio/mpeg'				=>'media-audio',
+		);
+
+	$attachment_ids = array();
 
 
+	//add any attachments from the media uploader
+	foreach($mimes as $mime => $icon){
+		if($attachments = get_children(array(   
+				'post_parent' => $post->ID,
+				'post_type' => 'attachment',
+				'numberposts' => -1,
+			 	'post_mime_type' => $mime,  //MIME Type condition
+		 	))){
+			foreach( $attachments as $attachment ){
+				$attachment_ids[] = $attachment->ID;
+			
+			}
+		}
+	}
+	//then, check for non blank array
+	if(!empty($attachment_ids)):
+		?>
+		<section class="post-attachments">
+			<h2>Files to Download:</h2>
+			<ul>
+		<?php
+		foreach($attachment_ids as $file){
+			$url = wp_get_attachment_url( $file );
+			$title = get_the_title( $file );
+			$filetype = wp_check_filetype($url);
+			$extension =  $filetype['ext']; 
+			$mime = get_post_mime_type( $file );
+			$icon = $mimes[$mime];
+			
+		
+			?>
+			<li><a href="<?php echo $url; ?>"><span class="dashicons dashicons-<?php echo $icon; ?>"></span><?php echo $title; ?> (<?php echo $extension; ?>)</a></li>
 
+		<?php
+		}
+		?>
+			</ul>
+		</section>
+		<?php 
+	endif;
 
+}
+function classroom_related_reading(){
+	global $post;
+	$related = get_post_meta($post->ID, 'related_reading', true );
+	if($related){
+	?>
+		<section class="related-reading">
+			<h2>Related Reading:</h2>
+			
+	<?php
+		echo wpautop($related);
+	} ?>
+			
+		</section>
+	<?php
+}
 
 
 if ( ! function_exists( 'the_archive_title' ) ) :
