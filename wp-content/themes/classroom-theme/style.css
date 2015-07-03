@@ -43,12 +43,10 @@ html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:1
 == Colors - todo: change when customization happens
 */
 #page{
-	background-color: white;
-	padding-top:3.5em;
+/*padding-top:3.5em;*/
 }
 header[role=banner]{
-	background-color: #EE6A6A;
-	position: fixed;
+	position: static;
 	top:0;
 	left:0;
 	width:100%;
@@ -60,6 +58,27 @@ header[role=banner]{
 footer[role=contentinfo]
 {
 	background-color: rgba(0,0,0,.1);
+	position: relative;
+}
+footer[role=contentinfo]:before{
+	font-family: "dashicons";
+	content: "\f118";
+	position: absolute;
+	left:50%;
+	border:solid 2px rgba(255,255,255,.7);
+	font-size:2.5em;
+	background-color: #AFB3B3;
+	top:		-.75em;
+	margin-left:-.75em;
+	width:		1.5em;
+	height:		1.5em;
+	line-height: 1.5em;
+	display: block;
+	overflow: hidden;
+	color:rgba(255,255,255,.5);
+	text-align: center;
+	border-radius: 3000px
+
 }
 /*
 ==Layout
@@ -350,7 +369,7 @@ a:active {
 	margin: 0;
 }
 /*display the toggle on small screens*/
-@media screen and (max-width: 649px) {
+@media screen and (max-width: 699px) {
 	.menu-toggle{
 		width:100%;
 		border-radius: 0;
@@ -502,8 +521,8 @@ a:active {
 == Widgets
 --------------------------------------------------------------*/
 .widget{
-	width:250px;
 	background-color: rgba(0,0,0,.05);
+	margin:1.5rem 0 ;
 }
 footer .widget{
 	font-size: .9em;
@@ -528,6 +547,7 @@ footer .widget{
 .widget_search .search-submit {
 	display: none;
 }
+
 /*list widgets*/
 #content ul{
 	margin: 0;
@@ -584,6 +604,7 @@ footer .widget{
 .blog .hentry, 
 .archive .hentry{
 	border-top:solid 1px #E2E2E2;
+	padding:1rem;
 }
 .hentry .wp-post-image{
 	padding: 0;
@@ -622,13 +643,14 @@ footer .widget{
 }
 .entry-title{
 	font-size:1.4em;
-	padding:1em 1rem 0;
+	margin:1rem ;
 	line-height: 1.2em;
+	padding:0;
 }
 .has-post-thumbnail .entry-title{
 	position: absolute;
 	top:0;
-	left:0;
+	left:1rem;
 	
 }
 .has-post-thumbnail .entry-title a{
@@ -641,13 +663,16 @@ footer .widget{
 	overflow: hidden;
 }
 .entry-header{
-	margin:.2em 1rem;
+	margin:.2rem 0;
+}
+.home .post-date{
+	display: none;
 }
 .entry-content{
-	margin:0 1rem;
+	margin:1rem ;
 }
 .entry-footer{
-	margin:1em 1rem;
+	margin:1rem ;
 }
 .cat-links{
 	float:right;
@@ -656,7 +681,8 @@ footer .widget{
 	display: none;
 }
 .hentry .due-date{
-	padding:1em;
+	margin:1em;
+
 }
 .byline,
 .updated:not(.published) {
@@ -816,8 +842,12 @@ object {
 		clear: both;
 	}
 }
-
-@media screen and (min-width: 650px) {
+@media screen and (min-width:601px){
+	header[role=banner]{
+		position: fixed;
+	}
+}
+@media screen and (min-width: 700px) {
 	header[role="banner"]{
 		position: static;
 		z-index: 1;
@@ -829,23 +859,32 @@ object {
 		float:left;
 		width:63%;
 	}
-	.page-template-template-no-sidebar main{
+	.page-template-template-no-sidebar main,
+	.single main,
+	.single aside[role=complementary]{
 		float:none;
-		width:100%;
-		margin-left: 0 !important;
+		width:98%;
+		margin:0 1%   !important;
 	}
 	aside[role=complementary]{
 		float:right;
 		width:35%;
 	}
+
 	header[role="banner"]{
 		text-align: center;
 	}
 	.site-branding{
 		min-height: 10em;  
+		padding-top:2em;
 	} 
 	.site-branding .site-description{
 		display: block;
+		color:white;
+		font-family: 'Droid Serif'; 
+		font-weight: 400;
+		font-style: italic;
+		font-size:1.2em;
 	}
 	.button,
 	button,
@@ -857,6 +896,7 @@ object {
 	/* == desktop nav menu*/
 	.main-navigation .menu{
 		background-color: #2D2D2D;
+
 	}
 	.main-navigation .menu-item-has-children > a:after{
 		content:" ►";
@@ -925,16 +965,25 @@ object {
 		padding:0 0 0 .5em;
 	}
 	/*post typog*/
+	.home .post-date{
+		display: inline;
+	}
 	.edit-link a{
-		display: inline-block;
 		background-color: #909090;
 		color: white;
+		position: absolute;
+		bottom:0;
+		left:1rem;
 		padding: .1em .2em;
 		margin:0 .1em ;
-		position: absolute;
-		top:0;
-		right:0;
 		opacity: .3;
+	}
+	.edit-link a:before{
+		
+		
+		
+		font-family: "dashicons";
+		content: "\f464";
 	}
 	/*matched height columns
 	https://css-tricks.com/fluid-width-equal-height-columns/
@@ -973,21 +1022,42 @@ object {
 		display: inline;
 	}
 }
-@media only screen and (min-width : 750px) {
+@media only screen and (min-width : 850px) {
 	.site-branding{
-		min-height: 15.625em;  /*at least as tall as the banner image*/
+		min-height: 250px;  /*at least as tall as the banner image (250px)*/
+		padding:6em 1em 1em;
+		
+
 	} 
+	header[role=banner] .site-title{
+		font-size:1.7em;
+		text-align: left;
+		margin:0 1% ;
+	}
+	header[role=banner] .site-description{
+		text-align: left;
+		margin:0 1% ;
+	}
+
+.main-navigation .menu{
+		padding-left:1%;
+}
 	main{
 		float:left;
-		width:67%;
+		width:68%;
 		margin-left:1%;
 	}
 	aside[role=complementary]{
 		float:right;
 		width:30%;
+		margin-right:1%;
+
+	}
+	aside[role=complementary] .widget{
+		margin-left: 1.5rem;
 	}
 	#main .hentry{
-		padding:2.2em  0 1em;
+		padding:2.2rem  0 1rem;
 		border:none;
 	}
 	.entry-header{
@@ -1018,7 +1088,7 @@ object {
 		float:right;
 		height: 100%;
 		width:30%;
-		margin: 0  0 1rem 1rem;
+		margin: 1rem;
 		height: auto;
 		top:0;
 		right:0;

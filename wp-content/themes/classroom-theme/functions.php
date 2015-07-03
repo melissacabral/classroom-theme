@@ -35,7 +35,7 @@ function classroom_theme_setup() {
 		'aside', 'image', 'video', 'quote', 'link',
 	) );
 	add_theme_support( 'custom-background', apply_filters( 'classroom_theme_custom_background_args', array(
-		'default-color' => 'CED8DB',
+		'default-color' => '',
 		'default-image' => get_template_directory_uri() . '/images/default-bg.png',
 	) ) );
 
@@ -85,7 +85,6 @@ function classroom_theme_scripts() {
 	wp_enqueue_script( 'jquery' );	
 	wp_enqueue_script( 'classroom-theme-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20120206', true );
 	wp_enqueue_script( 'classroom-theme-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20130115', true );
-	wp_enqueue_script( 'classroom-theme-freewall', get_template_directory_uri() . '/js/freewall.js', 'jquery', '1.05', true );
 	wp_enqueue_script( 'classroom-theme-main', get_template_directory_uri() . '/js/main.js', 'jquery', '0.1', true );
 
 
@@ -133,4 +132,155 @@ function classroom_theme_ex_more(){
 	return '&hellip; <a class="read-more button" href="'.get_permalink().'">Continue Reading</a>';
 }
 add_filter( 'excerpt_more', 'classroom_theme_ex_more' );
+
+
+/**
+ * ACF integration
+ * Adds custom fields to various post types
+ */
+if(function_exists("register_field_group"))
+{
+	register_field_group(array (
+		'id' => 'acf_attention-box',
+		'title' => 'Attention Box',
+		'fields' => array (
+			array (
+				'key' => 'field_5500e7a8e6a60',
+				'label' => 'Important',
+				'name' => 'important',
+				'type' => 'wysiwyg',
+				'instructions' => 'Any text you write here will be emphasized in a callout box when viewing the post. ',
+				'default_value' => '',
+				'toolbar' => 'full',
+				'media_upload' => 'yes',
+			),
+		),
+		'location' => array (
+			array (
+				array (
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'post',
+					'order_no' => 0,
+					'group_no' => 0,
+				),
+			),
+			array (
+				array (
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'page',
+					'order_no' => 0,
+					'group_no' => 1,
+				),
+			),
+		),
+		'options' => array (
+			'position' => 'normal',
+			'layout' => 'no_box',
+			'hide_on_screen' => array (
+			),
+		),
+		'menu_order' => 0,
+	));
+	register_field_group(array (
+		'id' => 'acf_optional-settings',
+		'title' => 'Optional Settings',
+		'fields' => array (
+			array (
+				'key' => 'field_54d4f0055e486',
+				'label' => 'Due Date',
+				'name' => 'due_date',
+				'type' => 'date_picker',
+				'date_format' => 'yymmdd',
+				'display_format' => 'dd/mm/yy',
+				'first_day' => 0,
+			),
+			array (
+				'key' => 'field_54d4f0265e487',
+				'label' => 'File Attachment',
+				'name' => 'file_attachment',
+				'type' => 'file',
+				'instructions' => 'Attach a file to this post for your students to download. If you need more than one file attachment, use the "Add Media" button. ',
+				'save_format' => 'object',
+				'library' => 'all',
+			),
+			array (
+				'key' => 'field_5500f5538b3e3',
+				'label' => 'Related Reading',
+				'name' => 'related_reading',
+				'type' => 'textarea',
+				'default_value' => '',
+				'placeholder' => '',
+				'maxlength' => '',
+				'rows' => 5,
+				'formatting' => 'html',
+			),
+		),
+		'location' => array (
+			array (
+				array (
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'post',
+					'order_no' => 0,
+					'group_no' => 0,
+				),
+			),
+			array (
+				array (
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'page',
+					'order_no' => 0,
+					'group_no' => 1,
+				),
+			),
+		),
+		'options' => array (
+			'position' => 'side',
+			'layout' => 'default',
+			'hide_on_screen' => array (
+			),
+		),
+		'menu_order' => 0,
+	));
+	register_field_group(array (
+		'id' => 'acf_resource-link-url',
+		'title' => 'Resource Link URL',
+		'fields' => array (
+			array (
+				'key' => 'field_54ffc3733fff4',
+				'label' => 'Link Address',
+				'name' => 'link_address',
+				'type' => 'text',
+				'required' => 1,
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => 'http://',
+				'append' => '',
+				'formatting' => 'none',
+				'maxlength' => '',
+			),
+		),
+		'location' => array (
+			array (
+				array (
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'resource-link',
+					'order_no' => 0,
+					'group_no' => 0,
+				),
+			),
+		),
+		'options' => array (
+			'position' => 'acf_after_title',
+			'layout' => 'no_box',
+			'hide_on_screen' => array (
+			),
+		),
+		'menu_order' => 0,
+	));
+}
 

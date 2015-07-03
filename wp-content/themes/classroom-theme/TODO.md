@@ -3,9 +3,9 @@ Major items
 ====
 
 * editor style
-* ACF integration
+* test ACF integration
 * click featured image for permalink
-* links category permissions on write screen
+* !!!!!!links category permissions on write screen!!!!!!!
 * integrate calendar plugin into theme
 
 

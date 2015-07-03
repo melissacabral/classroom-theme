@@ -16,7 +16,7 @@
  */
 function classroom_theme_custom_header_setup() {
 	add_theme_support( 'custom-header', apply_filters( 'classroom_theme_custom_header_args', array(		
-		'width'                  => 1000,
+		'width'                  => 1280,
 		'height'                 => 250,
 		'flex-height'            => true,
 		'wp-head-callback'       => 'classroom_theme_header_style',
