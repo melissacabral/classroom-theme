@@ -7,6 +7,7 @@
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	
 	<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
+	<?php classroom_theme_entry_meta(); ?>
 
 	<div class="entry-content">
 		<?php classroom_important_text(); ?>

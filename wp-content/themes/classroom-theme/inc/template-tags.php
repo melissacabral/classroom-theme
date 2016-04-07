@@ -24,16 +24,16 @@ function the_posts_navigation() {
 		<div class="nav-links">
 
 			<?php if ( get_next_posts_link() ) : ?>
-			<div class="nav-previous"><?php next_posts_link( __( 'Older posts', 'classroom-theme' ) ); ?></div>
-		<?php endif; ?>
+				<div class="nav-previous"><?php next_posts_link( __( 'Older posts', 'classroom-theme' ) ); ?></div>
+			<?php endif; ?>
 
-		<?php if ( get_previous_posts_link() ) : ?>
-		<div class="nav-next"><?php previous_posts_link( __( 'Newer posts', 'classroom-theme' ) ); ?></div>
-	<?php endif; ?>
+			<?php if ( get_previous_posts_link() ) : ?>
+				<div class="nav-next"><?php previous_posts_link( __( 'Newer posts', 'classroom-theme' ) ); ?></div>
+			<?php endif; ?>
 
-</div><!-- .nav-links -->
-</nav><!-- .navigation -->
-<?php
+		</div><!-- .nav-links -->
+	</nav><!-- .navigation -->
+	<?php
 }
 endif;
 
@@ -73,10 +73,15 @@ function classroom_show_duedate($text = 'Due '){
 
 	//get due date custom field 
 	$date = get_post_meta( $post->ID, 'due_date', true);
-
+	if($date == '')
+		return false;
 	// $date = 19881123 (23/11/1988)
-	if($date):
-		echo '<span class="due-date">' . $text .  classroom_get_duedate() . '</span>';
+	if($date == date('Ymd')):
+		echo '<span class="due-date due-today">' . $text .  'Today</span>';
+	elseif($date < date('Ymd')):
+		echo '<span class="due-date due-past">' . $text .  classroom_get_duedate() . '</span>';
+	elseif($date):
+		echo '<span class="due-date due-future">' . $text .  classroom_get_duedate() . '</span>';
 	endif;
 }
 function classroom_get_duedate( $unix = 0 ){
@@ -89,18 +94,18 @@ function classroom_get_duedate( $unix = 0 ){
 	if($date):
 		// extract Y,M,D
 		$y = substr($date, 0, 4);
-		$m = substr($date, 4, 2);
-		$d = substr($date, 6, 2);
+	$m = substr($date, 4, 2);
+	$d = substr($date, 6, 2);
 
 		// create UNIX
-		$time = strtotime("{$d}-{$m}-{$y}");		
+	$time = strtotime("{$d}-{$m}-{$y}");		
 
 		// format date (November 11th 1988)
-		if($unix):
-			return $time;
-		else:
-			return  date('F j', $time);
-		endif;
+	if($unix):
+		return $time;
+	else:
+		return  date('F j Y', $time);
+	endif;
 	endif;
 }
 /**
@@ -116,7 +121,7 @@ function classroom_count_days($from, $to){
 	if($output == 1) :
 		$output .= ' day';
 	elseif($output == 0):
-		$output = '<b>Today!</b>';
+		$output = '<span class="today-due">Today!</span>';
 	else:
 		$output .= ' days';
 	endif;
@@ -185,7 +190,7 @@ function classroom_theme_entry_footer() {
 		echo '</span>';
 	}
 
-	edit_post_link( __( 'Edit', 'classroom-theme' ), '<span class="edit-link">', '</span>' );
+	
 }
 /**
  * Generates a list of posts "due today" based on Due Date custom field
@@ -261,18 +266,19 @@ function classroom_important_text(){
 function classroom_file_attachments(){
 
 	global $post;
+	
 	//list of recognized dashicons => mime types. 
 	$mimes = array(
-			'application/x-photoshop'	=>	'media-format-image' ,
-			'application/zip'			=> 'media-archive',
-			'application/vnd.ms-excel'	=> 'media-spreadsheet',
-			'application/vnd.ms-powerpoint'	=> 'media-interactive'	,
-			'application/msword'			=> 'media-document',
-			'application/vnd.openxmlformats-officedocument.wordprocessingml.document'			=> 'media-document',	
-			'application/pdf'				=> 'media-document' ,					
-			'text/plain'				=> 'media-text' ,
-			'application/x-javascript' 	=> 'media-code',
-			'audio/mpeg'				=>'media-audio',
+		'application/x-photoshop'	=>	'media-format-image' ,
+		'application/zip'			=> 'media-archive',
+		'application/vnd.ms-excel'	=> 'media-spreadsheet',
+		'application/vnd.ms-powerpoint'	=> 'media-interactive'	,
+		'application/msword'			=> 'media-document',
+		'application/vnd.openxmlformats-officedocument.wordprocessingml.document'			=> 'media-document',	
+		'application/pdf'				=> 'media-document' ,					
+		'text/plain'				=> 'media-text' ,
+		'application/x-javascript' 	=> 'media-code',
+		'audio/mpeg'				=>'media-audio',
 		);
 
 	$attachment_ids = array();
@@ -281,42 +287,49 @@ function classroom_file_attachments(){
 	//add any attachments from the media uploader
 	foreach($mimes as $mime => $icon){
 		if($attachments = get_children(array(   
-				'post_parent' => $post->ID,
-				'post_type' => 'attachment',
-				'numberposts' => -1,
+			'post_parent' => $post->ID,
+			'post_type' => 'attachment',
+			'numberposts' => -1,
 			 	'post_mime_type' => $mime,  //MIME Type condition
-		 	))){
+			 	))){
 			foreach( $attachments as $attachment ){
 				$attachment_ids[] = $attachment->ID;
-			
+
 			}
 		}
 	}
-	//then, check for non blank array
-	if(!empty($attachment_ids)):
-		?>
-		<section class="post-attachments">
-			<h2>Files to Download:</h2>
-			<ul>
-		<?php
-		foreach($attachment_ids as $file){
-			$url = wp_get_attachment_url( $file );
-			$title = get_the_title( $file );
-			$filetype = wp_check_filetype($url);
-			$extension =  $filetype['ext']; 
-			$mime = get_post_mime_type( $file );
-			$icon = $mimes[$mime];
-			
-		
-			?>
-			<li><a href="<?php echo $url; ?>"><span class="dashicons dashicons-<?php echo $icon; ?>"></span><?php echo $title; ?> (<?php echo $extension; ?>)</a></li>
 
-		<?php
-		}
+
+	//get the attachment from the custom field
+	$manual_att   = get_post_meta($post->ID, 'file_attachment', true );
+	if($manual_att)
+		$attachment_ids[] = $manual_att;
+
+	//then, check for non blank array
+	if(!empty($attachment_ids) ):
 		?>
-			</ul>
-		</section>
-		<?php 
+	<section class="post-attachments">
+		<h2>Files to Download:</h2>
+		<ul>
+			<?php
+			foreach($attachment_ids as $file){
+				$url = wp_get_attachment_url( $file );
+				$title = get_the_title( $file );
+				$filetype = wp_check_filetype($url);
+				$extension =  $filetype['ext']; 
+				$mime = get_post_mime_type( $file );
+				$icon = $mimes[$mime];
+
+
+				?>
+				<li><a href="<?php echo $url; ?>"><span class="dashicons dashicons-<?php echo $icon; ?>"></span><?php echo $title; ?> (<?php echo $extension; ?>)</a></li>
+
+				<?php
+			}
+			?>
+		</ul>
+	</section>
+	<?php 
 	endif;
 
 }
@@ -324,19 +337,36 @@ function classroom_related_reading(){
 	global $post;
 	$related = get_post_meta($post->ID, 'related_reading', true );
 	if($related){
-	?>
+		?>
 		<section class="related-reading">
 			<h2>Related Reading:</h2>
 			
-	<?php
-		echo wpautop($related);
-	} ?>
-			
-		</section>
+			<?php
+			echo wpautop($related);
+		} ?>
+
+	</section>
 	<?php
 }
-
-
+/**
+ * Displays the custom logo in a link to the home page if it exists
+ * @param bool $link whether to wrap the image in an <a> tag that is linked to the home url. Default true
+ * @return mixed  HTML output for the image or linked image
+ */
+function classroom_custom_logo( $link = 1 ){
+	if( get_theme_mod( 'classroom_logo' ) ){
+		$id = get_theme_mod( 'classroom_logo' );
+		if($link){
+			?>
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="<?php bloginfo( 'name' ) ?>" rel="home" class="logo-link"> 
+				<?php echo wp_get_attachment_image( $id, 'full' );  ?>
+			</a>
+			<?php 
+		}else{
+			echo wp_get_attachment_image( $id, 'full' );
+		}
+	}
+}
 if ( ! function_exists( 'the_archive_title' ) ) :
 /**
  * Shim for `the_archive_title()`.

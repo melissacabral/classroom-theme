@@ -35,8 +35,8 @@ function classroom_theme_setup() {
 		'aside', 'image', 'video', 'quote', 'link',
 	) );
 	add_theme_support( 'custom-background', apply_filters( 'classroom_theme_custom_background_args', array(
-		'default-color' => '',
-		'default-image' => get_template_directory_uri() . '/images/default-bg.png',
+		'default-color' => '#fff',
+		
 	) ) );
 
 	add_editor_style();
@@ -245,42 +245,6 @@ if(function_exists("register_field_group"))
 		),
 		'menu_order' => 0,
 	));
-	register_field_group(array (
-		'id' => 'acf_resource-link-url',
-		'title' => 'Resource Link URL',
-		'fields' => array (
-			array (
-				'key' => 'field_54ffc3733fff4',
-				'label' => 'Link Address',
-				'name' => 'link_address',
-				'type' => 'text',
-				'required' => 1,
-				'default_value' => '',
-				'placeholder' => '',
-				'prepend' => 'http://',
-				'append' => '',
-				'formatting' => 'none',
-				'maxlength' => '',
-			),
-		),
-		'location' => array (
-			array (
-				array (
-					'param' => 'post_type',
-					'operator' => '==',
-					'value' => 'resource-link',
-					'order_no' => 0,
-					'group_no' => 0,
-				),
-			),
-		),
-		'options' => array (
-			'position' => 'acf_after_title',
-			'layout' => 'no_box',
-			'hide_on_screen' => array (
-			),
-		),
-		'menu_order' => 0,
-	));
+	
 }
 

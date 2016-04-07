@@ -3,6 +3,7 @@
  * Classroom Theme  Customizer - colors and layout
  *
  * @package Classroom Theme
+ * @todo : uncomment to restore this functionality. 
  */
 
 
@@ -10,6 +11,27 @@
 add_action( 'customize_register', 'classroom_theme_theme_customizer' );
 
 function classroom_theme_theme_customizer( $wp_customize ) {
+	//logo uploader
+	//create a setting
+	$wp_customize->add_setting( 'classroom_logo', array('sanitize_callback' => 'classroom_theme_setting_sanitize',) );
+	//create the image uploader control, display it in site_identity section
+	$wp_customize->add_control(
+		new WP_Customize_Cropped_Image_Control(
+			$wp_customize,
+			'logo',
+			array(
+				'label'       => 'Upload a logo',
+				'description' => 'Square format, please!',
+				'section'     => 'title_tagline',
+				'settings'    => 'classroom_logo',
+				'flex_width'  => false, 
+				'flex_height' => false,
+				'width'       => 150,
+				'height'      => 150,
+				)
+			)
+		);
+
 	//Link color
 	//create the setting and its defaults
 	$wp_customize->add_setting(	'classroom_theme_link_color', array( 
@@ -36,48 +58,48 @@ function classroom_theme_theme_customizer( $wp_customize ) {
 		'settings'   => 'classroom_theme_text_color', //the setting from above that this control controls!
 		)
 	));
-	//Option - Show or hide logo?
-	$wp_customize->add_section( 'classroom_theme_layout_section' , array(
-		'title'      => 'Layout',
-		'priority'   => 30,) );
+	// //Option - Show or hide logo?
+	// $wp_customize->add_section( 'classroom_theme_layout_section' , array(
+	// 	'title'      => 'Layout',
+	// 	'priority'   => 30,) );
 
 	
-	//Option - Right or left hand sidebar?
-	$wp_customize->add_setting( 'classroom_theme_layout', array( 
-		'default' => 'right',
-		'sanitize_callback' => 'classroom_theme_setting_sanitize',
-		 ) );
-	$wp_customize->add_control(
-		new WP_Customize_Control( $wp_customize, 'sidebar_layout', array(
-			'label'          => 'Sidebar Position',
-			'section'        => 'classroom_theme_layout_section',
-			'settings'       => 'classroom_theme_layout',
-			'type'           => 'radio',
-			'choices'        => array(
-				'left'   => 'Left',
-				'right'  => 'Right',
-				)
-			)
-		)
-	);
+	// //Option - Right or left hand sidebar?
+	// $wp_customize->add_setting( 'classroom_theme_layout', array( 
+	// 	'default' => 'right',
+	// 	'sanitize_callback' => 'classroom_theme_setting_sanitize',
+	// 	 ) );
+	// $wp_customize->add_control(
+	// 	new WP_Customize_Control( $wp_customize, 'sidebar_layout', array(
+	// 		'label'          => 'Sidebar Position',
+	// 		'section'        => 'classroom_theme_layout_section',
+	// 		'settings'       => 'classroom_theme_layout',
+	// 		'type'           => 'radio',
+	// 		'choices'        => array(
+	// 			'left'   => 'Left',
+	// 			'right'  => 'Right',
+	// 			)
+	// 		)
+	// 	)
+	// );
 	//Option - Light or dark color scheme?
-	$wp_customize->add_setting( 'classroom_theme_colorscheme', array( 
-		'default' => 'light',
-		'sanitize_callback' => 'classroom_theme_setting_sanitize',
-		 ) );
-	$wp_customize->add_control(
-		new WP_Customize_Control( $wp_customize, 'sidebar_layout', array(
-			'label'          => 'Base Color Scheme',
-			'section'        => 'colors',
-			'settings'       => 'classroom_theme_colorscheme',
-			'type'           => 'radio',
-			'choices'        => array(
-					'light'   	=> 'Light',
-					'dark'  	=> 'Dark',
-				)
-			)
-		)
-	);
+	// $wp_customize->add_setting( 'classroom_theme_colorscheme', array( 
+	// 	'default' => 'light',
+	// 	'sanitize_callback' => 'classroom_theme_setting_sanitize',
+	// 	 ) );
+	// $wp_customize->add_control(
+	// 	new WP_Customize_Control( $wp_customize, 'sidebar_layout', array(
+	// 		'label'          => 'Base Color Scheme',
+	// 		'section'        => 'colors',
+	// 		'settings'       => 'classroom_theme_colorscheme',
+	// 		'type'           => 'radio',
+	// 		'choices'        => array(
+	// 				'light'   	=> 'Light',
+	// 				'dark'  	=> 'Dark',
+	// 			)
+	// 		)
+	// 	)
+	// );
 
 }	
 
@@ -100,8 +122,11 @@ function classroom_theme_customizer_css() {
 			
 		<?php else: ?>
 			body{
-				background-color: #D8E1E4;
+				background-color: #f1f1f1;
 				color:black;
+			}
+			aside{
+
 			}
 			.hentry,
 			aside .widget{
@@ -115,23 +140,11 @@ function classroom_theme_customizer_css() {
 		header[role="banner"] .site-description{
 			color: #<?php echo get_header_textcolor(); ?>;
 		}
-		<?php if(get_theme_mod('classroom_theme_header_display' ) == false): ?>
-		.site-title,site-description{
-			display: none;
-		}
-		<?php endif; ?>
-		@media only screen and (min-width : 700px) {
-		<?php if(get_theme_mod('classroom_theme_layout') == 'right'): ?>
-			aside[role=complementary]{float:right;}
-			main{float:left;}
-		<?php else: ?>
-			aside[role=complementary]{float:left;}
-			main{float:right;}
-		<?php endif; ?>
-		}
+		
+		
 
 </style>
 <?php
 }
-add_action( 'wp_head', 'classroom_theme_customizer_css' );
+// add_action( 'wp_head', 'classroom_theme_customizer_css' );
 //no close PHP

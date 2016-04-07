@@ -10,7 +10,7 @@
  */
 
 $post_type = 'link';
-$taxonomy = 'link-category';
+$taxonomy = 'link-categorys';
 
 get_header(); ?>
 
@@ -22,6 +22,7 @@ get_header(); ?>
 
 // Gets every term in this taxonomy
         $terms = get_terms( $taxonomy );
+        if(! is_wp_error($terms) ):
 
 //go through each term in this taxonomy one at a time
         foreach( $terms as $term ) : 
@@ -56,6 +57,9 @@ get_header(); ?>
     <?php
     endif;
     endforeach;
+    else:
+      echo '<p>You need to activate the plugin "Custom Post Types - Links"</p>';
+    endif; //there are terms found
     ?>
        </article>
    </main><!-- #main -->

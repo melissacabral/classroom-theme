@@ -1,7 +1,7 @@
 <?php
 //Template Name: Assignments by Due Date
 /**
- * List of all posts by the due date field
+ * List of all posts with the due date field. shows a countdown to the deadline
  *
  * @package Classroom Theme
  */
@@ -13,81 +13,140 @@ get_header(); ?>
 
 		<?php if ( have_posts() ) : ?>
 
-		<?php /* Start the Loop */ ?>
-		<?php while ( have_posts() ) : the_post(); ?>
+			<?php /* Start the Loop */ ?>
+			<?php while ( have_posts() ) : the_post(); ?>
 
-		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-			<?php the_post_thumbnail('large' ); ?>
+				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+					<?php the_post_thumbnail('large' ); ?>
 
-			<h1 class="entry-title">Assignments by Due Date</h1>
+					<h1 class="entry-title">Assignments by Due Date</h1>
 
-			<div class="entry-content">
-				<?php the_content();?>
+					<div class="entry-content">
+						<?php the_content();?>
 
-				<?php 
-				$today = current_time( 'Ymd' , 0);
+						<?php 
+						$today = current_time( 'Ymd' , 0);
 
-				$args = array (
-					'post_type' => array('post','page'),
-					'ignore_sticky_posts' => 1,
-					'order' => 'ASC',
-					'orderby'   => 'meta_value_num',
-					'meta_key'  => 'due_date',
-					'meta_query' => array(
-						array(
-							'key'		=> 'due_date',
-							'compare'	=> '>=',
-							'value'		=> $today,
-							),
-						),
-					);
-				$q = new WP_Query($args);
+						$args = array (
+							'showposts' => 1000,
+							'post_type' => array('post','page'),
+							'ignore_sticky_posts' => 0,
+							'order' => 'ASC',
+							'orderby'   => 'meta_value_num',
+							'meta_key'  => 'due_date',
+							'meta_query' => array(
+								array(
+									'key'		=> 'due_date',
+									'compare'	=> '>=',
+									'value'		=> $today,
+									),
+								),
+							);
+						$q = new WP_Query($args);
 
 				 //begin custom loop
-				if( $q->have_posts() ): ?>
-				<table>
-					<tr>
-						<th>Date Due</th>
-						<th>&nbsp;</th>
-						<th>Assignment</th>
+						if( $q->have_posts() ): ?>
+						<h2>Upcoming Assignments:</h2>
+						<table>
+							<tr>
+								<th>Date Due</th>
+								<th>&nbsp;</th>
+								<th>Assignment</th>
 
 
-					</tr>
-					<?php while( $q->have_posts() ): $q->the_post(); ?>
-					<tr>
-						<td>
+							</tr>
+							<?php while( $q->have_posts() ): $q->the_post(); ?>
+								<tr>
+									<td>
 
-							<?php echo classroom_get_duedate(); ?>
-						</td>
-						<td>
+										<?php echo classroom_show_duedate(''); ?>
+									</td>
+									<td>
 
-							
-								<?php echo  classroom_count_days( classroom_get_duedate(), $today ); ?> 
-							</td>
-						<td>
-							<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>				
+
+										<?php echo  classroom_count_days( classroom_get_duedate(), $today ); ?> 
+									</td>
+									<td>
+										<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>				
+									</td>
+
+
+								</tr>
+
+							<?php endwhile; ?>
+						</table>
+					<?php else: ?>
+						<h2>There are no upcoming Assignments</h2>
+					<?php endif;  //end THE upcoming assignments LOOP 
+					wp_reset_postdata(); ?>
+
+					<?php 
+					$args = array (
+						'showposts' => 1000,
+						'post_type' => array('post','page'),
+						'ignore_sticky_posts' => 0,
+						'order' => 'ASC',
+						'orderby'   => 'meta_value_num',
+						'meta_key'  => 'due_date',
+						'meta_query' => array(
+							array(
+								'key'		=> 'due_date',
+								'compare'	=> '<',
+								'value'		=> $today,
+								),
+							),
+						);
+					$q = new WP_Query($args);
+
+				 //begin custom loop
+					if( $q->have_posts() ): ?>
+					<h2>Past Assignments:</h2>
+					<table >
+						<tr>
+							<th>Date Due</th>
+							<th>&nbsp;</th>
+							<th>Assignment</th>
+
+
+						</tr>
+						<?php while( $q->have_posts() ): $q->the_post(); 
+							if(get_post_meta( $post->ID, 'due_date', true )!= ''): ?>
+							<tr>
+								<td>
+
+									<?php echo classroom_show_duedate(''); ?>
 								</td>
-						
-						
-					</tr>
-
-				<?php endwhile; ?>
-			</table>
-		<?php else: ?>
-		<h2>There are no upcoming Assignments</h2>
-	<?php endif;  //end THE LOOP ?>
+								<td>
 
 
+									<?php echo  classroom_count_days( classroom_get_duedate(), $today ); ?> past
+								</td>
+								<td>
+									<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>				
+								</td>
 
-</div><!-- .entry-content -->
 
-<footer class="entry-footer">
-	<?php classroom_theme_entry_footer(); ?>
-</footer>
+							</tr>
 
-</article><!-- #post-## -->
+						<?php endif; //due_date is not blank
+						endwhile; ?>
+					</table>
+				<?php else: ?>
+					<h2>There are no upcoming Assignments</h2>
+				<?php endif;  //end THE past assignments LOOP
+				wp_reset_postdata(); ?>
 
-<?php endwhile; ?>
+
+
+			</div><!-- .entry-content -->
+
+			<footer class="entry-footer">
+				<?php classroom_theme_entry_footer(); ?>
+			</footer>
+
+		</article><!-- #post-## -->
+
+	<?php endwhile; ?>
 
 
 

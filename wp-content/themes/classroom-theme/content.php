@@ -5,7 +5,15 @@
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<?php the_post_thumbnail('large' ); ?>
+	<?php
+	if(has_post_thumbnail()){
+	?>
+	<a href="<?php the_permalink(); ?>">
+	<?php 
+		the_post_thumbnail('large' ); 
+		?>
+	</a>
+	<?php } ?>
 
 	<?php the_title( sprintf( '<h1 class="entry-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h1>' ); ?>
 
